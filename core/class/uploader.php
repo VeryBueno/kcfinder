@@ -197,8 +197,12 @@ class uploader {
 
         // HOST APPLICATIONS INIT
         if (isset($_GET['CKEditorFuncNum'])) {
-            $this->opener['name'] = "ckeditor";
-            $this->opener['CKEditor'] = array('funcNum' => $_GET['CKEditorFuncNum']);
+            // prevent XSS by verifying that CKEditorFuncNum is an integer.
+            $funcNum = $_GET['CKEditorFuncNum'];
+            if(preg_match('/^\d+$/', $funcNum)){
+                $this->opener['name'] = "ckeditor";
+                $this->opener['CKEditor'] = array('funcNum' => $funcNum);
+            }
 
         } elseif (isset($_GET['opener'])) {
             $this->opener['name'] = $_GET['opener'];
